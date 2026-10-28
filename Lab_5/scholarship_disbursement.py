@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sqlite3
 
 conn = sqlite3.connect(":memory:")
@@ -7,7 +7,7 @@ disbursed_total = 0
 
 
 def grant(student, scheme, amount, audit=[]):
-    conn.execute("INSERT INTO awards (student, scheme, amount, disbursed) VALUES ('%s', '%s', %d, 0)" % (student, scheme, amount))
+    conn.execute("INSERT INTO awards (student, scheme, amount, disbursed) VALUES (?, ?, ?, 0)", (student, scheme, amount))
     audit.append(student)
     return audit
 
@@ -23,9 +23,9 @@ def disburse(award_id):
 
 def archive():
     try:
-        os.system("echo archiving awards")
-    except Exception:
-        pass
+        print("archiving awards")
+    except OSError as exc:
+        print(f"Archiving failed: {exc}")
 
 
 def bySchemeCount(scheme):
